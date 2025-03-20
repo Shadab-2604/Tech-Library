@@ -594,38 +594,12 @@ function setupEventListeners() {
 }
 
 // Open book in modal
+// script.js (updated openBook function)
 function openBook(bookId) {
     const book = books.find(b => b.id === bookId);
     if (book) {
-        modalBookTitle.textContent = book.title;
-        modalBookCategory.textContent = book.category;
-        
-        // Use placeholder if cover isn't available
-        const coverSrc = book.cover || `https://via.placeholder.com/200x300?text=${encodeURIComponent(book.title)}`;
-        modalBookCover.src = coverSrc;
-        
-        // Show modal
-        modal.style.display = 'block';
-        
-        // Reset PDF viewer
-        currentPage = 1;
-        
-        // Load PDF
-        pdfjsLib.getDocument(book.pdfUrl).promise.then(pdfDoc_ => {
-            pdfDoc = pdfDoc_;
-            pageCount.textContent = pdfDoc.numPages;
-            
-            // Render first page
-            renderPage(currentPage);
-        }).catch(err => {
-            console.error('Error loading PDF:', err);
-            const ctx = pdfCanvas.getContext('2d');
-            ctx.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
-            ctx.font = '20px Arial';
-            ctx.fillStyle = 'red';
-            ctx.textAlign = 'center';
-            ctx.fillText('Error loading PDF', pdfCanvas.width / 2, pdfCanvas.height / 2);
-        });
+        // Open PDF in new tab
+        window.open(book.pdfUrl, '_blank');
     }
 }
 
